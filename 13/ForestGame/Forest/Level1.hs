@@ -1,4 +1,4 @@
-module ForestGame.Forest.Level1 where
+module Forest.Level1 where
 
 data Forest a = Exit | Trail a (Forest a) (Forest a) (Forest a) deriving (Show)
 
