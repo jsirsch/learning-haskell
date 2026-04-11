@@ -7,7 +7,7 @@ main = do
     putStrLn "🌲🌲🌲🌲🌲🌲🌲🌲🌲 Forest Game 🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲"
     putStrLn "🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲"
     putStrLn "You're traped in a Forest, try to escape! Remember that you loose stamina with each step you take."
-    gameLoop (10, level1Forest)
+    gameLoop (10 :: Int, level1Forest)
   where
     gameLoop (_, Exit) = putStrLn "CONGRATULATIONS! You escaped!"
     gameLoop (s, _) | s <= 0 = putStrLn "You ran out of stamina and died -.-! GAME OVER!"
