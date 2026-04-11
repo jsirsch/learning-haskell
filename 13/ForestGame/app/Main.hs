@@ -1,5 +1,6 @@
 import Forest.Level1 ( Forest(..), level1Forest )
 import User.Actions.Move ( AvailableMoves, move )
+import System.Random (randomRIO)
 
 main :: IO ()
 main = do
@@ -7,7 +8,8 @@ main = do
     putStrLn "🌲🌲🌲🌲🌲🌲🌲🌲🌲 Forest Game 🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲"
     putStrLn "🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲"
     putStrLn "You're traped in a Forest, try to escape! Remember that you loose stamina with each step you take."
-    gameLoop (10 :: Int, level1Forest)
+    initialStamina <- randomRIO (10, 20) :: IO Int
+    gameLoop (initialStamina, level1Forest)
   where
     gameLoop (_, Exit) = putStrLn "CONGRATULATIONS! You escaped!"
     gameLoop (s, _) | s <= 0 = putStrLn "You ran out of stamina and died -.-! GAME OVER!"
