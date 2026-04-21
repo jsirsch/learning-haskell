@@ -1,4 +1,9 @@
 module Main where
 
+import CLI (cliParser)
+
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = do
+    putStrLn "Hello, Haskell!"
+    output <- cliParser
+    putStrLn output
