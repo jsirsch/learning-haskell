@@ -2,23 +2,40 @@ module CLI where
 
 import Options.Applicative
 
-parserInfo :: ParserInfo String
-parserInfo = info options infoModifiers
+parserInfo :: ParserInfo Options
+parserInfo = info (options <**> helper) infoModifiers
 
-options :: Parser String
-options =
+data Options = Options
+    { inputFile     :: String
+    , outputFile    :: String
+    , verbose       :: Bool
+    } deriving (Show)
+
+options :: Parser Options
+options = Options <$>
     strOption
         (   short 'i'
         <>  long "input"
         <>  help "Input file to process"
         <>  metavar "INPUT_FILE"
         )
+    <*> strOption
+        (   short 'o'
+        <>  long "output"
+        <>  help "Output file to write results"
+        <>  metavar "OUTPUT_FILE"
+        )
+    <*> switch
+        (   short 'v'
+        <>  long "verbose"
+        <>  help "Enable verbose output"
+        )
 
-infoModifiers :: InfoMod String
+infoModifiers :: InfoMod Options
 infoModifiers = fullDesc
     <> progDesc "Process an input file and write results to an output file"
     <> header "CLI Tool - A simple command line interface for file processing"
 
 
-cliParser :: IO String
+cliParser :: IO Options
 cliParser = execParser parserInfo
