@@ -1,8 +1,10 @@
 module MdParser where
 
+import Control.Monad
 import Text.Megaparsec
 import Data.Void
 import Data.Text ( Text )
+import Text.Megaparsec.Char
 
 type MDParser = Parsec Void Text
 
@@ -10,6 +12,7 @@ data MdElem
     = PlainText Text
     | Italic MdElem
     | Bold MdElem
+    | Heading Int MdElem
     deriving (Show, Eq)
 
 parseText :: MDParser MdElem
@@ -32,3 +35,11 @@ parseLine =
         , parseItalic
         , parseText
         ]
+
+parseHeading :: MDParser MdElem
+parseHeading = label "heading" $ do
+    level <- length <$> some (char '#')
+    when (level > 6) $
+        fail "heading level must be between 1 and 6"
+    space1
+    Heading level <$> parseLine
