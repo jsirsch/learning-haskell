@@ -13,6 +13,7 @@ data MdElem
     | Italic MdElem
     | Bold MdElem
     | Heading Int MdElem
+    | Paragraph [MdElem]
     deriving (Show, Eq)
 
 parseText :: MDParser MdElem
@@ -43,3 +44,10 @@ parseHeading = label "heading" $ do
         fail "heading level must be between 1 and 6"
     space1
     Heading level <$> parseLine
+
+parseParagraph :: MDParser MdElem
+parseParagraph = label "paragraph" $ do
+    skipMany space1
+    elements <- some parseLine
+    skipMany space1
+    pure $ Paragraph elements
