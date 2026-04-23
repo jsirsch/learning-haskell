@@ -18,6 +18,7 @@ data MdElem
     | Heading Int MdElem
     | Paragraph [MdElem]
     | OrderedList [ListItem]
+    | UnorderedList [ListItem]
     deriving (Show, Eq)
 
 parseText :: MDParser MdElem
@@ -63,6 +64,17 @@ parseOrderedList = label "ordered list" $ do
     parseListItem :: MDParser ListItem
     parseListItem = do
         void $ digitChar >> char '.' >> space1
+        elements <- some parseLine
+        skipMany space1
+        pure $ ListItem elements
+
+parseUnorderedList :: MDParser MdElem
+parseUnorderedList = label "unordered list" $ do
+    UnorderedList <$> some parseListItem
+  where
+    parseListItem :: MDParser ListItem
+    parseListItem = do
+        void $ char '-' >> space1
         elements <- some parseLine
         skipMany space1
         pure $ ListItem elements
