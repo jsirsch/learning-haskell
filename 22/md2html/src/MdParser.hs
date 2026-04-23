@@ -6,6 +6,9 @@ import Data.Void
 import Data.Text ( Text )
 import Text.Megaparsec.Char
 
+newtype ListItem = ListItem [MdElem]
+    deriving (Show, Eq)
+
 type MDParser = Parsec Void Text
 
 data MdElem
@@ -14,6 +17,7 @@ data MdElem
     | Bold MdElem
     | Heading Int MdElem
     | Paragraph [MdElem]
+    | OrderedList [ListItem]
     deriving (Show, Eq)
 
 parseText :: MDParser MdElem
@@ -51,3 +55,14 @@ parseParagraph = label "paragraph" $ do
     elements <- some parseLine
     skipMany space1
     pure $ Paragraph elements
+
+parseOrderedList :: MDParser MdElem
+parseOrderedList = label "ordered list" $ do
+    OrderedList <$> some parseListItem
+  where
+    parseListItem :: MDParser ListItem
+    parseListItem = do
+        void $ digitChar >> char '.' >> space1
+        elements <- some parseLine
+        skipMany space1
+        pure $ ListItem elements
