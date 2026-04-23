@@ -78,3 +78,19 @@ parseUnorderedList = label "unordered list" $ do
         elements <- some parseLine
         skipMany space1
         pure $ ListItem elements
+
+parseGroup :: MDParser MdElem
+parseGroup =
+    choice
+        [ parseHeading
+        , parseOrderedList
+        , parseUnorderedList
+        , parseParagraph
+        ]
+
+mainParser :: MDParser [MdElem]
+mainParser = do
+    skipMany space1
+    elements <- some parseGroup
+    eof
+    pure elements
