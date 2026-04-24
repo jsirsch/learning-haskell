@@ -63,6 +63,7 @@ executable md2html
     -- Modules included in this executable, other than Main.
     other-modules:  CLI
                     MdParser
+                    ToHTML
 
     -- Other library packages from which modules are imported.
     build-depends:    base ^>=4.18.3.0
