@@ -5,6 +5,8 @@ module Main where
 import              CLI             (Options (..), cliParser)
 import qualified    Data.Text.IO    as TIO
 import Control.Monad (when)
+import MdParser (mainParser)
+import Text.Megaparsec (runParser)
 
 main :: IO ()
 main = do
@@ -18,3 +20,10 @@ main = do
                     ,"File Content:"
                     ,show fileContent
                     ]
+    case runParser mainParser inputFile fileContent of
+        Left err -> print err
+        Right elems -> do
+            when verbose $ do
+                print "-------------------------------------------"
+                print "Parsed elements:"
+                print elems
