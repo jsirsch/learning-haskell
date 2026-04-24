@@ -7,6 +7,8 @@ import qualified    Data.Text.IO    as TIO
 import Control.Monad (when)
 import MdParser (mainParser)
 import Text.Megaparsec (runParser)
+import ToHTML (toHTML)
+
 
 main :: IO ()
 main = do
@@ -27,3 +29,9 @@ main = do
                 print "-------------------------------------------"
                 print "Parsed elements:"
                 print elems
+            let html = toHTML elems
+            when verbose $ do
+                print "-------------------------------------------"
+                print "HTML:"
+                print html
+            TIO.writeFile outputFile html
